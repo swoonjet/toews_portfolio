@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jon Toews — Creative Director</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --text: #f5f5f5;
+            --muted: #888;
+            --accent: #ff1f71;
+            --card-bg: #141414;
+            --border: #222;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            background: rgba(10,10,10,0.8);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.5px;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        nav .nav-links a:hover {
+            color: var(--text);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,31,113,0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            letter-spacing: -3px;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: #ff1f71;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--muted);
+            max-width: 500px;
+            font-weight: 300;
+        }
+
+        .hero .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            animation: bounce 2s infinite;
+        }
+
+        .hero .scroll-hint svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--muted);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* PROJECT CARDS */
+        .projects {
+            display: flex;
+            flex-direction: column;
+            gap: 8rem;
+            padding: 4rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .project.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project:nth-child(even):not(.project--portrait) {
+            direction: rtl;
+        }
+
+        .project:nth-child(even):not(.project--portrait) > * {
+            direction: ltr;
+        }
+
+        .project-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .project-client {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .project-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .project-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .project-awards {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,31,113,0.1);
+            border: 1px solid rgba(255,31,113,0.2);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: #ff6ba0;
+            font-weight: 500;
+            width: fit-content;
+        }
+
+        .project-awards svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .project-media {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card-bg);
+            aspect-ratio: 16/10;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+
+        .project-media video,
+        .project-media iframe,
+        .project-media img {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+        }
+
+        /* VIDEO SELECTOR (Axsome) */
+        .video-selector {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-selector .main-video {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        .video-selector .main-video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .video-selector .video-tabs {
+            display: flex;
+            gap: 2px;
+            background: #111;
+            padding: 2px;
+        }
+
+        .video-selector .video-tab {
+            flex: 1;
+            padding: 0.6rem 0.5rem;
+            background: #1a1a1a;
+            border: none;
+            color: var(--muted);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+
+        .video-selector .video-tab:hover {
+            background: #222;
+            color: var(--text);
+        }
+
+        .video-selector .video-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* PORTRAIT PROJECT (Axsome MDD) */
+        .project--portrait {
+            grid-template-columns: 1fr;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .project--portrait .project-info {
+            align-items: center;
+        }
+
+        .project--portrait .project-media {
+            aspect-ratio: auto;
+            width: 380px;
+            height: 680px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .project--portrait .video-selector {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project--portrait .main-video {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        .project--portrait .main-video iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: contain;
+        }
+
+        .project--portrait .video-tabs {
+            flex-shrink: 0;
+        }
+
+        /* KLICK BRAND CSS IMAGE */
+        .klick-hero-img {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .klick-hero-img .blue-circle {
+            width: 70%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #0046ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .klick-hero-img .blue-circle .tagline {
+            color: #000;
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: clamp(0.9rem, 2.5vw, 1.8rem);
+            text-align: center;
+            line-height: 1.15;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .klick-hero-img .klick-logo {
+            position: absolute;
+            top: 12px;
+            left: 14px;
+            font-family: monospace;
+            font-weight: 900;
+            font-size: 0.7rem;
+            color: #000;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        /* LOGO-ONLY PROJECTS */
+        .logo-projects {
+            padding: 4rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-projects h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .logo-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s;
+        }
+
+        .logo-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .logo-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px) !important;
+        }
+
+        .logo-card .brand-icon {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .logo-card p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* CONTACT */
+        .contact {
+            text-align: center;
+            padding: 8rem 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact p {
+            color: var(--muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .contact a.email-link {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .contact a.email-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,31,113,0.3);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav .nav-links { gap: 1rem; }
+            nav .nav-links a { font-size: 0.75rem; }
+            .project { grid-template-columns: 1fr; gap: 2rem; }
+            .project:nth-child(even) { direction: ltr; }
+            .logo-grid { grid-template-columns: 1fr; }
+            .projects { gap: 5rem; }
+        }
+
+        /* Divider */
+        .divider {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .divider hr {
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">Jon Toews</div>
+        <ul class="nav-links">
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>
+            <span>Jon Toews</span>
+            Creative Director
+        </h1>
+        <p>Award-winning creative direction spanning digital experiences, brand systems, film, short fiction, music, and emerging technology.</p>
+        <div class="scroll-hint">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <div id="work" class="projects">
+
+        <!-- 1. UNMAS Sweeper -->
+        <div class="project">
+            <div class="project-info">
+                <div class="project-client">UNMAS &times; Critical Mass</div>
+                <h2 class="project-title">Sweeper</h2>
+                <p class="project-desc">This installation is deeply personal and emotional, highlighting the devastating impact of landmines. The virtual minefield exhibit at the New Museum in New York City brought this reality to life. The Sweeper mobile app used iBeacon technology to trigger audio explosions on visitors' phones as they navigated the exhibit, followed by stories of the damage caused and calls to donate to UNMAS.</p>
+                <div class="project-awards">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Cannes, New York Festival, Communication Arts
+                </div>
+            </div>
+            <div class="project-media">
+                <video controls playsinline preload="metadata" poster="assets/images/sweeper-poster.jpg">
+                    <source src="assets/videos/sweeper.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- 2. Massey Lectures App -->
+        <div class="project">
+            <div class="project-info">
+                <div class="project-client">House of Anansi &times; Critical Mass</div>
+                <h2 class="project-title">Massey Lectures App</h2>
+                <p class="project-desc">The Massey Lectures Series explores how publishers and cultural institutions can leverage mobile technology for personalized content and social engagement. The Massey Lectures iPad app offers a new way to experience nearly 200 hours of thought-provoking material. Each e-book, paired with its corresponding five-hour audio lecture series, is enhanced with vibrant, contextual content, author interviews, and more.</p>
+                <div class="project-awards">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Cannes Lion in Design
+                </div>
+            </div>
+            <div class="project-media">
+                <video controls playsinline preload="metadata" poster="assets/images/massey-poster.jpg">
+                    <source src="assets/videos/massey-lectures.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- 3. Inaccessible Transit Shelter -->
+        <div class="project">
+            <div class="project-info">
+                <div class="project-client">City of Toronto</div>
+                <h2 class="project-title">The Inaccessible Transit Shelter</h2>
+                <p class="project-desc">On behalf of the Centre for Independent Living in Toronto and the City of Toronto, this transit shelter was entirely enclosed in glass so people couldn't get inside. A headline explained: "Feeling left out? Over 400,000 Torontonians with disabilities do, too." A call to action drove people to a website where they could explore ways of making Toronto more accessible.</p>
+                <div class="project-awards">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Communication Arts, Canadian Marketing
+                </div>
+            </div>
+            <div class="project-media">
+                <img src="assets/images/transit-shelter-new.jpg" alt="The Inaccessible Transit Shelter - glass enclosed bus shelter with headline: Feeling left out?" loading="lazy">
+            </div>
+        </div>
+
+        <!-- 4. Be A Donor -->
+        <div class="project">
+            <div class="project-info">
+                <div class="project-client">Trillium Gift of Life Network</div>
+                <h2 class="project-title">Be A Donor</h2>
+                <p class="project-desc">The Be A Donor campaign was an extremely successful initiative. This is the hyper personal and emotional television ad that accompanied the direct digital campaign to sign up and register online.</p>
+            </div>
+            <div class="project-media">
+                <video controls playsinline preload="metadata" poster="assets/images/be-a-donor-poster.jpg">
+                    <source src="assets/videos/be-a-donor.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- 5. Axsome Therapeutics - MDD Campaign -->
+        <div class="project project--portrait">
+            <div class="project-info">
+                <div class="project-client">Axsome Therapeutics &times; Klick Health</div>
+                <h2 class="project-title">MDD Awareness Campaign</h2>
+                <p class="project-desc">A disease state awareness campaign for Major Depressive Disorder. These social ads and targeted digital content highlighted the reality for so many patients. They broke through the clutter with eye-popping animations and maximalist illustration styling. We collected data from direct signups and delivered patient brochures and launch information for a new drug therapy from Axsome.</p>
+                <div class="project-awards">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    New York Festival, Communication Arts, Creative Floor
+                </div>
+            </div>
+            <div class="project-media">
+                <div class="video-selector" id="axsome-selector">
+                    <div class="main-video">
+                        <iframe id="axsome-player" src="https://drive.google.com/file/d/1-REO--cy3fn6KC5QTQO7aPP0n2NXWnOv/preview" allow="autoplay" loading="lazy"></iframe>
+                    </div>
+                    <div class="video-tabs">
+                        <button class="video-tab active" data-src="https://drive.google.com/file/d/1-REO--cy3fn6KC5QTQO7aPP0n2NXWnOv/preview">Ad 1</button>
+                        <button class="video-tab" data-src="https://drive.google.com/file/d/1mLqV_fJctN8nPo4lpQkiTaukODKBAwxN/preview">Ad 2</button>
+                        <button class="video-tab" data-src="https://drive.google.com/file/d/1Fblaf38zr26gpVfLg6fF_qqtqUCF-4wa/preview">Ad 3</button>
+                        <button class="video-tab" data-src="https://drive.google.com/file/d/1oKlIhlv6Md79EFdZ5ucensSifnYz2dFf/preview">Ad 4</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Klick Brand and Web -->
+        <div class="project">
+            <div class="project-info">
+                <div class="project-client">Klick Health</div>
+                <h2 class="project-title">Klick Brand &amp; Web</h2>
+                <p class="project-desc">As creative director for the Klick.com redesign, I led the evolution of the site into a bold, immersive experience that reflects Klick's unique fusion of science, strategy, and creativity. I oversaw visual design, UX, and interactive storytelling to create a site that's both striking and strategically aligned with Klick's human-centric approach to healthcare.</p>
+            </div>
+            <div class="project-media" style="cursor: pointer;" onclick="window.open('https://www.klick.com/','_blank')">
+                <div class="klick-hero-img">
+                    <div class="klick-logo">kli<br>ck</div>
+                    <div class="blue-circle">
+                        <div class="tagline">There's something<br>different here.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Klick Holiday -->
+        <div class="project">
+            <div class="project-info">
+                <div class="project-client">Klick Health</div>
+                <h2 class="project-title">Klick Holiday</h2>
+                <p class="project-desc">Showing my director chops in animation, music and concept, this holiday video for Klick Health won awards at Creative Floor and the Clios.</p>
+                <div class="project-awards">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Creative Floor, Clios
+                </div>
+            </div>
+            <div class="project-media">
+                <video controls playsinline preload="metadata" poster="assets/images/klick-holiday-poster.jpg">
+                    <source src="assets/videos/klick-holiday-v2.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="divider"><hr></div>
+
+    <!-- MORE PROJECTS -->
+    <div id="more" class="logo-projects">
+        <h2>Additional Work</h2>
+        <div class="logo-grid">
+
+            <div class="logo-card">
+                <div class="brand-icon" style="color: #0051a5;">NASA</div>
+                <h3>NASA Digital Redesign</h3>
+                <p>Over a two month pitch process that included speculative concepts and working prototypes, I helped Critical Mass land a massive web redesign project from the ground up and then helped execute and implement everything from tech, UX, content, and design.</p>
+            </div>
+
+            <div class="logo-card">
+                <div class="brand-icon" style="color: #003DA5;">citi</div>
+                <h3>Consumer Banking of the Future</h3>
+                <p>Imagining and prototyping banking in the future with two tracks — one five years out and one ten-plus years out. These concepts included hyper personalized marketing with facial recognition, biometrics and predictive intelligence. Many were piloted worldwide.</p>
+            </div>
+
+            <div class="logo-card">
+                <div class="brand-icon">axsome</div>
+                <h3>Axsome Corporate Redesign</h3>
+                <p>Won five future indication marketing projects and a corporate redesign for an emerging biotech company. We won on the strength of our tech, creative, social and CRM integration strategies and concepts.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+        <div class="section-label">Get in Touch</div>
+        <h2>Other portfolio highlights available on request</h2>
+        <p>I'd love to hear from you about new projects, creative collaborations, or opportunities.</p>
+        <a href="mailto:jontoews@gmail.com" class="email-link">jontoews@gmail.com</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Jon Toews &mdash; 2025</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.project, .logo-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Axsome video tab switcher
+        document.querySelectorAll('.video-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const selector = tab.closest('.video-selector');
+                const player = selector.querySelector('.main-video iframe');
+                selector.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                player.src = tab.dataset.src;
+            });
+        });
+
+        // Smooth nav background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            nav.style.borderBottomColor = window.scrollY > 50 ? '#333' : '#222';
+        });
+    </script>
+
+</body>
+</html>
